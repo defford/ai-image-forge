@@ -1,33 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Image Forge
+
+A private, passcode-protected web application for generating and modifying images using OpenAI's Image Generation API.
+
+## Features
+
+- **Passcode Protection**: Secure access to the application
+- **Text-to-Image Generation**: Create images from text prompts using OpenAI's `gpt-image-1` model.
+- **Image Modification**: Edit existing images or create variations using the `gpt-image-1` model.
+- **Image History**: View and manage previously generated images.
+- **Local Storage**: Saves generated images to the browser's localStorage, storing up to the 10 most recent images to manage space.
+
+## Technologies Used
+
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
+- **State Management**: Zustand
+- **API Integration**: OpenAI API (focused on `gpt-image-1` for image generation and edits)
+- **UI Components**: React Icons, React Hot Toast
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 16.8 or later
+- OpenAI API key with access to OpenAI's Image Generation API (model: `gpt-image-1`).
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env.local` file in the root directory with the following content:
+
+```
+NEXT_PUBLIC_OPENAI_API_KEY=your_openai_api_key_here
+```
+
+4. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Using the Application
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Enter the passcode on the login screen (default: `forge2025`)
+2. Use the prompt form to generate images
+3. View and manage your generated images in the gallery
+4. Click on an image to view details, modify it, or see its modification history
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+This application can be deployed to Vercel with minimal configuration:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Be sure to set the environment variables in your Vercel project settings.
 
 ## Deploy on Vercel
 
