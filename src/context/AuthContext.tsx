@@ -15,9 +15,8 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {},
 });
 
-// The correct passcode would typically come from an environment variable
-// For development purposes, we're hardcoding it here
-const CORRECT_PASSCODE = 'forge2025';
+// For development purposes, we're using an environment variable
+const CORRECT_PASSCODE = process.env.NEXT_PUBLIC_APP_PASSCODE;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
