@@ -5,10 +5,21 @@ import { useImageStore } from '@/lib/store';
 import { generateImage, ImageSize, ImageModel, ImageBackground, ImageModeration, ImageQuality, ImageOutputFormat } from '@/lib/openai';
 import toast from 'react-hot-toast';
 
+interface GenerateImageParams {
+  prompt: string;
+  model: ImageModel;
+  size: ImageSize;
+  background: ImageBackground;
+  moderation: ImageModeration;
+  quality: ImageQuality;
+  output_format: ImageOutputFormat;
+  output_compression: number;
+}
+
 export default function PromptForm() {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [model, setModel] = useState<ImageModel>('gpt-image-1');
+  const [model, /* setModel */] = useState<ImageModel>('gpt-image-1');
   const [size, setSize] = useState<ImageSize>('1024x1024');
   const [background, setBackground] = useState<ImageBackground>('auto');
   const [moderation, setModeration] = useState<ImageModeration>('auto');
@@ -31,9 +42,9 @@ export default function PromptForm() {
     try {
       const loadingToast = toast.loading('Generating your image...');
       
-      const params: any = {
+      const params: GenerateImageParams = {
         prompt,
-        model: 'gpt-image-1',
+        model,
         size,
         background,
         moderation,
@@ -46,7 +57,7 @@ export default function PromptForm() {
       
       if (images && images.length > 0 && images[0].b64_json) {
         const imageUrl = `data:image/png;base64,${images[0].b64_json}`;
-        addImage(prompt, imageUrl, 'gpt-image-1', size);
+        addImage(prompt, imageUrl, model, size);
         toast.success('Image generated successfully!', { id: loadingToast });
         setPrompt('');
       } else {

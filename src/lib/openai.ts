@@ -9,9 +9,13 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true, // Only for development
 });
 
+// Attempt to import specific param types from OpenAI SDK
+import type { ImageGenerateParams as OpenAIImageGenerateParams, ImageEditParams as OpenAIImageEditParams } from 'openai/resources/images.mjs';
+
 export type ImageSize = '1024x1024' | '1536x1024' | '1024x1536' | '256x256' | '512x512' | 'auto';
 export type ImageModel = 'gpt-image-1'; 
 export type ImageQuality = 'standard' | 'hd' | 'high' | 'medium' | 'low' | 'auto';
+export type EditSpecificImageQuality = 'standard' | 'high' | 'medium' | 'low' | 'auto';
 export type ImageResponseFormat = 'url' | 'b64_json';
 export type ImageBackground = 'transparent' | 'opaque' | 'auto';
 export type ImageModeration = 'low' | 'auto';
@@ -37,7 +41,7 @@ export interface EditImageParams {
   mask?: string; 
   model?: ImageModel; 
   n?: number;
-  quality?: ImageQuality;
+  quality?: EditSpecificImageQuality;
   size?: ImageSize;
   user?: string;
 }
@@ -63,12 +67,12 @@ export async function generateImage({
   user,
 }: GenerateImageParams) {
   try {
-    const requestParams: any = { prompt };
+    const requestParams: Partial<OpenAIImageGenerateParams> = { prompt }; // Use Partial SDK type
     
     if (n) requestParams.n = n;
     if (user) requestParams.user = user;
     
-    requestParams.model = 'gpt-image-1'; 
+    requestParams.model = model; // Use the model parameter from signature
     
     if (background) requestParams.background = background;
     if (moderation) requestParams.moderation = moderation;
@@ -87,7 +91,7 @@ export async function generateImage({
       requestParams.quality = 'auto'; 
     }
     
-    const response = await openai.images.generate(requestParams);
+    const response = await openai.images.generate(requestParams as OpenAIImageGenerateParams);
     return response.data;
   } catch (error) {
     console.error('Error generating image:', error);
@@ -107,9 +111,9 @@ export async function editImage({
   user,
 }: EditImageParams) {
   try {
-    const requestParams: any = { prompt };
+    const requestParams: Partial<OpenAIImageEditParams> = { prompt }; // Use Partial SDK type
     
-    requestParams.model = 'gpt-image-1';
+    requestParams.model = model; // Use the model parameter from signature
     
     if (n) requestParams.n = n;
     if (user) requestParams.user = user;
@@ -138,7 +142,7 @@ export async function editImage({
       requestParams.mask = base64ToFile(mask, 'mask.png');
     }
     
-    const response = await openai.images.edit(requestParams);
+    const response = await openai.images.edit(requestParams as OpenAIImageEditParams);
     return response.data;
   } catch (error) {
     console.error('Error editing image:', error);

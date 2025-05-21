@@ -7,7 +7,7 @@ import { editImage, ImageSize } from '@/lib/openai';
 import toast from 'react-hot-toast';
 import { FiX, FiDownload } from 'react-icons/fi';
 
-interface ImageModalProps {
+export interface ImageModalProps {
   imageUrl: string;
   imageData: ImageItem;
   onClose: () => void;
@@ -41,11 +41,9 @@ export default function ImageModal({ imageUrl, imageData, onClose }: ImageModalP
     const loadingToast = toast.loading('Modifying image...');
     
     try {
-      // Remove the data:image/png;base64, prefix
-      const base64Image = imageUrl.split(',')[1];
-      
+      // The editImage function likely expects the full data URL or handles stripping the prefix itself.
       const result = await editImage({
-        image: imageUrl,
+        image: imageUrl, // Using imageUrl directly
         prompt: modifyPrompt,
         size,
       });

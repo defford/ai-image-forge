@@ -35,7 +35,7 @@ const getInitialState = (): ImageItem[] => {
 
 const MAX_HISTORY_LENGTH = 10; // Define the maximum number of images to store
 
-export const useImageStore = create<ImageStore>((set, get) => ({
+export const useImageStore = create<ImageStore>((set) => ({
   images: getInitialState(),
   
   addImage: (prompt, imageUrl, model, size) => {

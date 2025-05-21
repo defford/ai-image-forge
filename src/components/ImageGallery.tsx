@@ -2,17 +2,19 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { useImageStore, ImageItem } from '@/lib/store';
+import { useImageStore } from '@/lib/store';
+import type { ImageItem } from '@/lib/store';
 import { FiTrash2, FiDownload, FiEye } from 'react-icons/fi';
 import dynamic from 'next/dynamic';
+import type { ImageModalProps } from './ImageModal.tsx';
 
 // Dynamically import the ImageModal component to avoid circular dependencies
-const ImageModal = dynamic(() => import('./ImageModal'), { ssr: false });
+const ImageModal = dynamic<ImageModalProps>(() => import('./ImageModal').then(mod => mod.default), { ssr: false });
 
 export default function ImageGallery() {
   const { images, deleteImage } = useImageStore();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedImageData, setSelectedImageData] = useState<any | null>(null);
+  const [selectedImageData, setSelectedImageData] = useState<ImageItem | null>(null);
 
   const handleDeleteImage = (id: string) => {
     if (window.confirm('Are you sure you want to delete this image?')) {
@@ -29,7 +31,7 @@ export default function ImageGallery() {
     document.body.removeChild(link);
   };
 
-  const openImageModal = (imageUrl: string, imageData: any) => {
+  const openImageModal = (imageUrl: string, imageData: ImageItem) => {
     setSelectedImage(imageUrl);
     setSelectedImageData(imageData);
   };
@@ -108,7 +110,6 @@ export default function ImageGallery() {
       
       {selectedImage && selectedImageData && (
         <div key="modal-wrapper">
-          {/* @ts-ignore - Dynamic import causes type issues, but this will work at runtime */}
           <ImageModal
             imageUrl={selectedImage}
             imageData={selectedImageData}

@@ -1,7 +1,6 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 type AuthContextType = {
   isAuthenticated: boolean | null;
@@ -22,7 +21,6 @@ const CORRECT_PASSCODE = 'forge2025';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const router = useRouter();
 
   // Check if the user is already authenticated on component mount
   useEffect(() => {
